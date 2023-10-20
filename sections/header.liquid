@@ -1,0 +1,27 @@
+
+<nav class=" flex justify-between">
+    <div>
+        {% for link in linklists.main-menu.links -%}
+            {% comment %} {{ link.title | link_to: link.url }} {% endcomment %}
+            {% if link.links.size > 0 %}
+                {% for sublink in link.links %}
+                    <a href="{{sublink.url}}">{{sublink.title}}(sub)</a>
+                {% endfor %}
+            {% endif %}
+            <a href="{{link.url}}">{{link.title}}</a>
+          {%- endfor %}
+          
+       
+       {% comment %} <a href="#">link </a>
+       <a href="#">link </a>
+       <a href="#">link </a> {% endcomment %}
+    </div>
+    {% if shop.customer_accounts_enabled %}
+        <div>
+            <a href="#">Login </a>
+            <a href="#">Register </a>
+        </div>
+    {% endif %}
+   
+</nav>
+aaYKaH5EUaQa28I

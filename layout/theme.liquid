@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Title of the document</title>
+{{content_for_header}}
+{{ 'app.css' | asset_url | stylesheet_tag}}
+</head>
+
+<body>
+    {% section "header" %}
+    {{content_for_layout}}
+</body>
+
+</html>
