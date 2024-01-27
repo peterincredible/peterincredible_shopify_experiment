@@ -1,0 +1,23 @@
+<h1>This is the customer account page</h1>
+<h1>Customers Address</h1>
+{% comment %} {% if customer.default_address %}
+    <p>{{ customer.default_address.address1 }}</p>
+  
+    {% if customer.default_address.address2 != blank %}
+      <p>{{ customer.default_address.address2 }}</p>
+    {% endif %}
+    666{{customer.default_address |  format_address}}7777{{customer.default_address.first_name}}({{customer.email}})
+  
+    <p>{{ customer.default_address.city }}, {% if customer.default_address.province_code %}{{ customer.default_address.province_code }}{% endif %}, {{ customer.default_address.country_code }}
+    <p>{{ customer.default_address.zip_code }}</p>
+    <p>{{ customer.default_address.phone }}</p>
+  {% endif %} {% endcomment %}
+<h1>Your orders</h1>
+{% paginate customer.orders by 10 %}
+    {% for order in customer.orders %}
+      {% comment %} <p>{{order.id}}({{order.financial_status}})--({{order.fulfillment_status_label}})</p> {% endcomment %}
+      <p>{{order.id}} -- (<a href="{{order.customer_url}}">view order</a>")</p>
+    {% endfor %}
+    {{ paginate | default_pagination }}
+{% endpaginate %}
+<a href="{{routes.account_addresses_url}}">view addresses</a>

@@ -1,0 +1,26 @@
+<h1 class=" text-center"> Collection {{collection.title}}</h1>
+{% paginate collection.products by 2 %}
+    <div class=" grid grid-cols-1 sm:grid-cols-2  md:grid-cols-3 gap-x-16 gap-y-20">
+        {% for product in collection.products %}
+            <div>
+                <div class=" h-80">
+                    <img class="block h-full w-full" src="{{product.featured_image|  image_url }}" alt="image cant be shown"/>
+                </div>
+               <div class="flex justify-between">
+                <a href="{{product.url}}" >{{product.title | truncatewords: 2,'...'}}</a>
+
+                {% form 'product', product %}
+                    <input type="text" value="{{product.selected_or_first_available_variant.id}}" name="id" hidden/>
+                    {% comment %} name="product-id" {% endcomment %}
+                    {% comment %} <input min="1" type="number" id="quantity" name="quantity" value="1"/> {% endcomment %}
+                    <input type="submit" value="Add to cart">
+                  {% endform %}
+                {% comment %} <a href="#">Add to Cart</a> {% endcomment %}
+               </div>
+                
+            </div>
+            
+        {% endfor %}
+    </div>
+    {{paginate |  default_pagination}}
+{% endpaginate %}

@@ -1,0 +1,11 @@
+
+
+{% assign temp = "" %}
+{% for article in blog.articles %}
+    {% if temp contains article.handle %}
+        {% else %}
+            {% assign  temp = temp |  append: article.handle  %}
+    {% endif %}
+    {% comment %} <a href="{{article.url}}">{{article.title}}</a> {% endcomment %}
+{% endfor %}
+{{temp}}

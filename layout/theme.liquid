@@ -2,13 +2,18 @@
 <html>
 <head>
 <title>Title of the document</title>
-{{content_for_header}}
-{{ 'app.css' | asset_url | stylesheet_tag}}
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js" ></script>
+{{ 'app.css' | asset_url | stylesheet_tag }}
+{{ content_for_header }}
+
 </head>
 
 <body>
     {% section "header" %}
-    {{content_for_layout}}
+    {{ content_for_layout }}
+    {% comment %} <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script> {% endcomment %}
+    {{ 'app.js' | asset_url | script_tag }}
+    
 </body>
 
 </html>

@@ -1,0 +1,389 @@
+<script>
+        Alpine.data('modalinit', () => ({
+            isopen: false,
+            provinces:[],//[[1,1],[2,2]],
+            default_province:"",
+ 
+            toggleModal() {
+                this.$refs.default_m.classList.toggle('hidden');
+                if(this.$refs.country){
+                    if(this.$refs.country.dataset.default){
+                                 this.$refs.country.value = this.$refs.country.dataset.default
+                     }
+                }
+                if(this.$refs.province){
+                    if(this.$refs.province.dataset.default){
+                                 this.default_province = this.$refs.province.dataset.default
+                                //  this.$refs.province.value = this.$refs.province.dataset.default
+                     }
+                }
+                this.changeProvince()
+                
+                // this.changeProvince();
+                
+               
+            },
+            changeProvince(){
+                if(!this.$refs.default_m.classList.contains('hidden')){
+                      if(this.$refs.country){
+                           
+                           let option = Array.from(this.$refs.country.children).find(option=>option.value == this.$refs.country.value);
+                        //    console.log(option);
+
+                           if(option){
+                            
+                               let provinces = JSON.parse(option.dataset.provinces)
+                               console.log(provinces)
+                               this.provinces.splice(0)
+                               this.provinces.push(...provinces);
+                               
+                           }
+                      }
+                }
+            }
+        }))
+        Alpine.data('modalinit2', () => ({
+            isopen: false,
+            provinces:[],//[[1,1],[2,2]],
+            default_province:"",
+ 
+            toggleModal() {
+                this.$refs.default_n.classList.toggle('hidden');
+                if(this.$refs.countryN){
+                    if(this.$refs.countryN.dataset.default){
+                                 this.$refs.countryN.value = this.$refs.countryN.dataset.default
+                     }
+                }
+                if(this.$refs.provinceN){
+                    if(this.$refs.provinceN.dataset.default){
+                                 this.default_province = this.$refs.provinceN.dataset.default
+                                //  this.$refs.province.value = this.$refs.province.dataset.default
+                     }
+                }
+                this.changeProvince()
+                
+                // this.changeProvince();
+                
+               
+            },
+            changeProvince(){
+                if(!this.$refs.default_n.classList.contains('hidden')){
+                     
+                      if(this.$refs.countryN){
+                           
+                           let option = Array.from(this.$refs.countryN.children).find(option=>option.value == this.$refs.countryN.value);
+
+                           if(option){
+                            
+                               let provinces = JSON.parse(option.dataset.provinces)
+                               console.log(provinces)
+                               this.provinces.splice(0)
+                               this.provinces.push(...provinces);
+                               
+                           }
+                      }
+                }
+            }
+        }))
+</script>
+<h1>Hi all this is the address page</h1>
+<h1>Addresses</h1>
+{% for address in customer.addresses  %}
+    <div x-data="modalinit">
+                <p>
+                    {% if address == customer.default_address %}
+                        ({{forloop.index}}){{address| format_address}}--(default)-- 
+                        <button @click="toggleModal" >edit address</button>
+                        {% else %}
+                        ({{forloop.index}}){{address| format_address}}
+                        <button @click="toggleModal" >edit address</button>
+                    {% endif %}
+                    <form class="address-delete-form"
+                        method="post"
+                        action="/account/addresses/{{ address.id }}"
+                        >
+                        <input type="hidden" name="_method" value="delete">
+                        <button type="submit">delete</button>
+                    </form>
+                </p>        
+                <!-- Main modal -->
+                <div x-ref="default_m" id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                    <div class="relative p-4 w-full max-w-2xl max-h-full">
+                        <!-- Modal content -->
+                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                            <!-- Modal header -->
+                            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                    Edit Address
+                                </h3>
+                                <button @click="toggleModal" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
+                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                    </svg>
+                                    <span class="sr-only">Close modal</span>
+                                </button>
+                            </div>
+                            <!-- Modal body -->
+                            {% form 'customer_address', address %}
+                                <div class="p-4 md:p-5 space-y-4">
+                                        
+                                            <div class="grid gap-6 mb-6 md:grid-cols-2">
+                                                <div>
+                                                    <label for="AddressFirstName_{{ form.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First name</label>
+                                                    <input type="text" 
+                                                        id="AddressFirstName_{{ form.id }}"
+                                                        name="address[first_name]"
+                                                        value="{{ form.first_name }}"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John" required>
+                                                </div>
+                                                <div>
+                                                    <label for="AddressLastName_{{ form.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last name</label>
+                                                    <input type="text" 
+                                                        id="AddressLastName_{{ form.id }}"
+                                                        name="address[last_name]"
+                                                        value="{{ form.last_name }}"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required>
+                                                </div>
+                                                <div>
+                                                    <label for="AddressCompany_{{ form.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company</label>
+                                                    <input type="text" 
+                                                        id="AddressCompany_{{ form.id }}"
+                                                        name="address[company]"
+                                                        value="{{ form.company }}"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required>
+                                                </div>
+                                                <div>
+                                                    <label for="AddressAddress1_{{ form.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address 1</label>
+                                                    <input type="text" 
+                                                        id="AddressAddress1_{{ form.id }}"
+                                                        name="address[address1]"
+                                                        value="{{ form.address1 }}"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required>
+                                                </div>
+                                                <div>
+                                                    <label for="AddressAddress2_{{ form.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address 2</label>
+                                                    <input type="text" 
+                                                        id="AddressAddress2_{{ form.id }}"
+                                                        name="address[address2]"
+                                                        value="{{ form.address2 }}"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required>
+                                                </div>
+                                                <div>
+                                                    <label for="AddressCity_{{ form.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
+                                                    <input type="text" 
+                                                        id="AddressCity_{{ form.id }}"
+                                                        name="address[city]"
+                                                        value="{{ form.city }}"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required>
+                                                </div>
+                                                <div>
+                                                    <label for="AddressCity_{{ form.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an Country</label>
+                                                    
+                                                    <select 
+                                                    id="AddressCountry_{{ form.id }}"
+                                                    x-ref="country"
+                                                    data-default="{{ form.country }}"
+                                                    name="address[country]"
+                                                    @change="changeProvince"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    >
+                                                    {{ all_country_option_tags }}
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label for="AddressProvince_{{ form.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Province</label>
+                                                    
+                                                    <select
+                                                    id="AddressProvince_{{ form.id }}"
+                                                    name="address[province]"
+                                                    x-ref="province"
+                                                    data-default="{{ form.province }}"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    >
+                                                    {% comment %} <template x-for="(province,i) in provinces" :key="province+i">
+                                                        <option :value="province" x-text="province"></option>
+                                                    </template> {% endcomment %}
+                                                    <template x-for="(province,i) in provinces" :key="province[0]+i">
+                                                        <option :value="province[0]" x-text="province[1]" :selected="default_province == province[1]"></option>
+                                                    </template> 
+                                                        {% comment %} <option x-for="province in provinces" x-text="province[0]"></option> {% endcomment %}
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label for="visitors" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone no</label>
+                                                    <input 
+                                                        type="tel"
+                                                        id="AddressPhoneNew"
+                                                        name="address[phone]"
+                                                        value="{{ form.phone }}"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required>
+                                                </div>
+                                                <div>
+                                                    <label for="AddressFirstName_{{ form.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Zip code</label>
+                                                    <input type="text" 
+                                                            id="AddressZipNew"
+                                                            name="address[zip]"
+                                                            value="{{ form.zip }}"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John" required>
+                                                </div>
+                                                <div>
+                                                    {{ form.set_as_default_checkbox }}
+                                                    <label for="address_default_address_new">Mark as default</label>
+                                                </div>
+                                            </div>
+                                        
+                                </div>
+                                <!-- Modal footer -->
+                                <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                                    <button data-modal-hide="default-modal" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button>
+                                    <button @click="toggleModal" data-modal-hide="default-modal" type="button" class="ms-3 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
+                                </div>
+                            {% endform %}
+                        </div>
+                    </div>
+                </div>
+     </div>
+     <br/>
+      
+{% endfor %}
+<div x-data="modalinit2">
+    <button class="bg-blue-800 text-white p-5 rounded-md" @click="toggleModal">Add new Address</button>
+
+    <!-- Main modal new address -->
+    <div x-ref="default_n" id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-2xl max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                        Edit Address
+                    </h3>
+                    <button @click="toggleModal" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                {% form 'customer_address', customer.new_address %}
+                    <div class="p-4 md:p-5 space-y-4">
+                                <div class="grid gap-6 mb-6 md:grid-cols-2">
+                                    <div>
+                                        <label for="AddressFirstName_{{ form.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First name</label>
+                                        <input type="text" 
+                                            id="AddressFirstName_{{ form.id }}"
+                                            name="address[first_name]"
+                                            value="{{ form.first_name }}"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John" required>
+                                    </div>
+                                    <div>
+                                        <label for="AddressLastName_{{ form.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last name</label>
+                                        <input type="text" 
+                                            id="AddressLastName_{{ form.id }}"
+                                            name="address[last_name]"
+                                            value="{{ form.last_name }}"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required>
+                                    </div>
+                                    <div>
+                                        <label for="AddressCompany_{{ form.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company</label>
+                                        <input type="text" 
+                                            id="AddressCompany_{{ form.id }}"
+                                            name="address[company]"
+                                            value="{{ form.company }}"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required>
+                                    </div>
+                                    <div>
+                                        <label for="AddressAddress1_{{ form.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address 1</label>
+                                        <input type="text" 
+                                            id="AddressAddress1_{{ form.id }}"
+                                            name="address[address1]"
+                                            value="{{ form.address1 }}"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required>
+                                    </div>
+                                    <div>
+                                        <label for="AddressAddress2_{{ form.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address 2</label>
+                                        <input type="text" 
+                                            id="AddressAddress2_{{ form.id }}"
+                                            name="address[address2]"
+                                            value="{{ form.address2 }}"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required>
+                                    </div>
+                                    <div>
+                                        <label for="AddressCity_{{ form.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
+                                        <input type="text" 
+                                            id="AddressCity_{{ form.id }}"
+                                            name="address[city]"
+                                            value="{{ form.city }}"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required>
+                                    </div>
+                                    <div>
+                                        <label for="AddressCity_{{ form.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an Country</label>
+                                        
+                                        <select 
+                                        id="AddressCountry_{{ form.id }}"
+                                        x-ref="countryN"
+                                        data-default="{{ form.country }}"
+                                        name="address[country]"
+                                        @change="changeProvince"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        >
+                                        {{ all_country_option_tags }}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="AddressProvince_{{ form.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Province</label>
+                                        
+                                        <select
+                                        id="AddressProvince_{{ form.id }}"
+                                        name="address[province]"
+                                        x-ref="provinceN"
+                                        data-default="{{ form.province }}"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        >
+                                        {% comment %} <template x-for="(province,i) in provinces" :key="province+i">
+                                            <option :value="province" x-text="province"></option>
+                                        </template> {% endcomment %}
+                                        <template x-for="(province,i) in provinces" :key="province[0]+i">
+                                            <option :value="province[0]" x-text="province[1]" :selected="default_province == province[1]"></option>
+                                        </template> 
+                                            {% comment %} <option x-for="province in provinces" x-text="province[0]"></option> {% endcomment %}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="visitors" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone no</label>
+                                        <input 
+                                            type="tel"
+                                            id="AddressPhoneNew"
+                                            name="address[phone]"
+                                            value="{{ form.phone }}"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required>
+                                    </div>
+                                    <div>
+                                        {{ form.set_as_default_checkbox }}
+                                        <label for="address_default_address_new">Mark as default</label>
+                                      </div>
+                                    <div>
+                                        <label for="AddressFirstName_{{ form.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Zip code</label>
+                                        <input type="text" 
+                                                id="AddressZipNew"
+                                                name="address[zip]"
+                                                value="{{ form.zip }}"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John" required>
+                                    </div>
+                                </div>
+                            
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                        <button data-modal-hide="default-modal" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button>
+                        <button @click="toggleModal" data-modal-hide="default-modal" type="button" class="ms-3 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
+                    </div>
+                {% endform %}
+            </div>
+        </div>
+    </div>
+</div>
+
+

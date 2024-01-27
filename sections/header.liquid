@@ -5,10 +5,10 @@
             {% comment %} {{ link.title | link_to: link.url }} {% endcomment %}
             {% if link.links.size > 0 %}
                 {% for sublink in link.links %}
-                    <a href="{{sublink.url}}">{{sublink.title}}(sub)</a>
+                    <a href="{{ sublink.url }}">{{ sublink.title }}(sub)</a>
                 {% endfor %}
             {% endif %}
-            <a href="{{link.url}}">{{link.title}}</a>
+            <a href="{{ link.url }}">{{ link.title }}</a>
           {%- endfor %}
           
        
@@ -16,12 +16,33 @@
        <a href="#">link </a>
        <a href="#">link </a> {% endcomment %}
     </div>
+    {% comment %} <a href="{{routes.cart_url}}">Cart</a> {% endcomment %}
     {% if shop.customer_accounts_enabled %}
-        <div>
-            <a href="#">Login </a>
-            <a href="#">Register </a>
-        </div>
+        <form action="{{ routes.search_url }}">
+            <input type="hidden" name="type" value="product"/>
+            <input type="text"
+                placeholder="Search"
+                name="q"
+                value="{{ search.terms | escape }}"
+            >
+            <input type="submit" value="Search">
+        </form>
+        <a href="{{ routes.cart_url }}" class=" mr-3">Cart</a>
+        {% if customer %}
+            <div>
+                <a href="{{ routes.account_url }}" class=" mr-3">Account</a>
+                <a href="{{ routes.account_logout_url }}">Logout</a>
+            </div>
+        {% else %}
+            <div>
+                {% comment %}
+                    <a href="{{routes.cart_url}}">Cart</a>
+                {% endcomment %}
+                <a href="{{ routes.account_login_url }}">Login </a>
+                <a href="{{ routes.account_register_url }}">Register </a>
+            </div>
+        {%endif%}
+       
     {% endif %}
    
 </nav>
-aaYKaH5EUaQa28I

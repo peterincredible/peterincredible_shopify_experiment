@@ -1,0 +1,112 @@
+<h1>{{section.settings.article_title}}</h1>
+
+{% for block in section.blocks %}
+    {% case block.type %}
+    {% when 'article_title' %}
+        <h1>{{section.settings.article_title}}</h1>
+    {% when 'article_content' %}
+        <div>
+            {{section.settings.article_content}}
+        </div>
+    {% when 'article_image' %}
+        {% if section.settings.article_image != blank %}
+                {% comment %} <p>there is an image</p> {% endcomment %}
+                <img src="{{section.settings.article_image  | image_url}}" class=" block w-100 h-60"/>
+            {% else %}
+                {{"blog-apparel-1" |  placeholder_svg_tag}}
+        {% endif %}
+    {% else %}
+    
+{% endcase %}
+{% endfor %}
+{% if blog.comments_enabled? %}
+    <h3>New Comments</h3>
+
+   
+
+    {% form 'new_comment', article %}
+        {% if form.errors %}
+            {{ form.errors | default_errors }}
+        {% endif %}
+        {% if form.posted_successfully?%}
+            <p>comment posted successfully</p>
+        {% endif %}
+        <div class="name">
+            <label for="name">Name</label>
+            <input type="text" name="comment[author]" value="{{ form.author }}" class=" border-2 border-red-500">
+        </div>
+
+        <div class="email">
+            <label for="email">Email</label>
+            <input type="email" name="comment[email]" value="{{ form.email }}" class=" border-2 border-red-500">
+        </div>
+
+        <div class="comment">
+            <label for="comment">Comment</label>
+            <textarea name="comment[body]" class=" border-2 border-red-500">{{ form.body }}</textarea>
+        </div>
+
+        <div class="submit">
+            <input type="submit" value="Post" class=" p-5 bg-blue-700 text-white">
+        </div>
+    {% endform %}
+    <h4>List of comments</h4>
+    {% if article.comments_count > 0 %}
+        {% render 'pagination' article %}
+        {% else %}
+            <p>sorry you have no comments</p>
+    {% endif %}
+    
+        
+    {% else %}
+    <p>comment is not enabled</p>
+    
+{% endif %}
+
+
+
+
+{% schema %}
+{
+    "name": "articule Schema",
+    "settings": [
+          {
+            "type": "text",
+            "default": "No Title",
+            "id": "article_title",
+            "label": "Article Title",
+            "placeholder": "Enter article title"
+          },
+          {
+            "type": "textarea",
+            "label": "Article Content",
+            "default": "No Content",
+            "id": "article_content"
+          },
+          {
+            "type": "image_picker",
+            "id": "article_image",
+            "label": "Article Image"
+          }
+        ],
+    "blocks": [
+        {
+            "name": "Article Title Test",
+            "type": "article_title",
+            "limit": 1
+        },
+        {
+            "name": "Article Content",
+            "type": "article_content",
+            "limit": 3
+        },
+        {
+            "name": "Article Image",
+            "type": "article_image",
+            "limit": 1
+        }
+        
+
+    ]
+}
+{% endschema %}

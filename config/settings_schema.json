@@ -1,0 +1,60 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "leanring_conig",
+    "theme_author": "Peter dibie",
+    "theme_version": "1.0.0",
+    "theme_documentation_url": "https:\/\/support.shopify.com\/",
+    "theme_support_email": "ekene.dibie@gmail.com"
+  },
+  {
+        "name": "Category2",
+        "settings": [
+           {
+              "type": "text",
+              "default": "No Title",
+              "id": "article_title1",
+              "label": "Article Title",
+              "placeholder": "Enter article title"
+            },
+            {
+              "type": "textarea",
+              "label": "Article Content",
+              "default": "No Content",
+              "id": "article_content1"
+            },
+            {
+              "type": "image_picker",
+              "id": "article_image1",
+              "label": "Article Image"
+            },
+            {
+              "type": "color",
+              "id": "body_text",
+              "label": "Body text",
+              "default": "#000000"
+            }
+            
+        ]
+        
+  },
+  {
+        "name": "Test contact form",
+        "settings": [
+          {
+            "type": "text",
+            "default": "Form Header Title general setings",
+            "id": "header_title",
+            "label": "Header Title",
+            "placeholder": "please enter placeholder form title"
+           },
+           {
+            "type": "text",
+            "default": "Submit Text general seetings",
+            "id": "submit_text",
+            "label": "Submit Text",
+            "placeholder": "please enter submit text"
+           }
+        ]
+  }
+]

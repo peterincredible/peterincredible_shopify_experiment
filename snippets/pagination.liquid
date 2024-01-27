@@ -1,0 +1,8 @@
+
+
+{% paginate article.comments by 1 %}
+    {% for comment in article.comments %}
+         <p>{{comment.author}} --{{comment.content}}</p>
+    {% endfor %}
+    {{paginate |  default_pagination}}
+{% endpaginate %}

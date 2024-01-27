@@ -1,0 +1,64 @@
+<h1>{{product.title}} (<span id="product_price_holder">{{product.price | money}} </span>)</h1>
+<img src="{{product.featured_image |  image_url}}" alt=""/>
+{% form 'product',product %}
+    {% assign pp =  product.selected_or_first_available_variant%}
+    <input name="id" value="{{pp.id}}" hidden class="pp"/>
+    {% for option in product.options_with_values %}
+        <p>{{option.name}}</p>
+       
+        <select  class="variant_selectors">
+            {% for value in option.values %}
+                <option value="{{ value}}" 
+                {% if value == option.selected_value%}selected="selected"{% endif %}
+                >
+                {{value}}
+                </option>
+            {% endfor %}
+        </select>
+
+    {% endfor %}
+    <input type="submit" value="Add to cart"> 
+    <!-- form content -->
+    {% comment %} <select name="id">
+    {% for variant in product.variants %}
+        <option value="{{ variant.id }}"
+        {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
+        >
+        {{ variant.title }} - {{ variant.price | money }} peter
+        </option>
+    {% endfor %}
+    </select>
+    <input type="submit" value="Add to cart"> {% endcomment %}
+  {% endform %}
+  {%if product.metafields.custom.test_meta_fields%}
+  <p>meta tesing paragraph</p>
+  <p>{{product.metafields.custom.test_meta_fields}}</p>
+  {%endif%}
+  <script>
+    let variant_holder = {{product.variants|  json}}
+    var currencySymbol = "{{ shop.money_format | strip_html | split: '{{' | first }}";
+
+    // variant_holder = JSON.parse(variant_holder);
+    
+    console.log(variant_holder)
+    let variant_selectors = document.getElementsByClassName('variant_selectors');
+    for(let select of variant_selectors){
+        select.addEventListener('change',selectorChangeHandler);
+    }
+
+    function selectorChangeHandler(e){
+        let variant_title = Array.from(document.getElementsByClassName('variant_selectors'))
+                           .map(select=>select.value)
+                           .join(" / ");
+        let price_element = document.getElementById('product_price_holder')
+        let variant= variant_holder.find(data=>data.title == variant_title);
+        price_element.innerText = `${currencySymbol}${variant.price}`;
+        let pp = document.getElementsByClassName('pp')[0];
+        pp.value=variant.id;
+        console.log('selector changed oo',variant_title,variant.id,pp.value);
+    }
+
+
+    
+  </script>
+  

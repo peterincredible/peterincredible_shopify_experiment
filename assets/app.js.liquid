@@ -1,0 +1,12 @@
+console.log('app.js just loaded hippi')
+// handleClick("peter");
+function handleClick(e) {
+    let id = e.target.id.split("_")[1];
+        id = `total_${id}`;
+        price = parseFloat(e.target.dataset.price);
+        quantity = parseFloat(e.target.value);
+
+        let total = document.getElementById(id);
+        // console.dir(total);
+        total.innerText= price * quantity;
+    }

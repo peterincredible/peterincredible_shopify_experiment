@@ -1,0 +1,10 @@
+{
+    "name": "ha ha",
+    "layout": "theme_again",
+    "sections": {
+        "template":{
+            "type": "template-404"
+        }
+    },
+    "order": ["template"]
+}

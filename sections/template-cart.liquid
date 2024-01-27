@@ -1,0 +1,44 @@
+
+<h1 class=" text-center text-7xl">this is the cart page</h1>
+{% if cart.item_count == 0%}
+      <p>you have no item on the cart</p>
+    {% else %}
+        <p>you have {{cart.item_count}} in the cart</p>
+{% endif %}
+<form action="{{ routes.cart_url }}" method="post">
+    <table class="w-5/6 mx-auto">
+        <thead class="w-full">
+            <tr class=" w-full grid grid-cols-6 gap-1">
+                <th class="col-span-3 text-left">Item</th>
+                <th class="text-left">Price</th>
+                <th class="text-left">Quantity</th>
+                <th class="text-left">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+                {% for item in cart.items %}
+                    <tr class=" w-full grid grid-cols-6 gap-1">
+                        <td class="col-span-3 text-left">{{item.title}}</td>
+                        <td class="text-left">{{item.price}}</td>
+                        <td>
+                            <input type="number" min="0" max="100" name="updates[]" 
+                                value="{{ item.quantity }}" id="quantity_{{item.id}}" 
+                                data-price="{{item.price}}"
+                                @change='handleClick'  />
+                        </td>
+                        {% comment %} <td class="text-left">{{item.quantity}}</td> {% endcomment %}
+                        <td class="text-left" id="total_{{item.id}}">{{item.price |  times:  item.quantity}}</td>
+                    </tr>
+                {% endfor %}
+                <tr class="">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+        </tbody>
+    </table>
+   <input type="submit" value="Update cart" class=" hover:cursor-pointer">
+   <input type="submit" name="checkout" value="Checkout">
+</form>

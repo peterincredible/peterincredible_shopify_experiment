@@ -1,0 +1,39 @@
+<h1>Customer register page</h1>
+
+{% form 'create_customer' %}
+    {% comment %} {{ form.errors | default_errors }} {% endcomment %}
+  
+    <div class="first-name">
+      <label for="first-name">First name</label>
+      <input type="text" name="customer[first_name]" class="border">
+    </div>
+    <div class="">
+        <label for="middle_name">Middle Name</label>
+        <input type="text" name="customer[note][middle_name]" class="border">
+      </div>
+    <div class="last-name">
+      <label for="last-name">Last name</label>
+      <input type="text" name="customer[last_name]" class="border">
+    </div>
+  
+    <div class="email">
+      <label for="email">Email</label>
+      <input type="email" name="customer[email]" class="border">
+    </div>
+    
+  
+    <div class="password">
+      <label for="password">Password</label>
+      <input type="password" name="customer[password]" class="border">
+    </div>
+  
+    <div class="submit">
+      <input type="submit" value="Create">
+    </div>
+    {%- if form.errors contains 'password' -%}
+        <p>meen change password / use another password</p>
+          {% comment %} {{ form.errors.translated_fields.password | capitalize }}
+          {{ form.errors.messages.password }}. {% endcomment %}
+        </span>
+      {%- endif -%}
+  {% endform %}

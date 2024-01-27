@@ -1,0 +1,33 @@
+<h1>{{section.settings.header_msg}}</h1>
+{% if section.settings.redirect_url ==blank%}
+    <a href="{{routes.root_url}}">{{section.settings.redirect_message}}</a>
+    
+    {% else %}
+    <a href="{{section.settings.redirect_url}}">{{section.settings.redirect_message}}</a>
+     
+{% endif %}
+<button>{{section.settings.redirect_btn}}</button>
+{% schema %}
+{
+    "name": "404 schema",
+    "settings": [
+                {
+                    "type": "text",
+                    "default": "default 404 message",
+                    "id": "header_msg",
+                    "label": "404 header message"
+                },
+                {
+                    "type": "url",
+                    "id": "redirect_url",
+                    "label": "redirect button"
+                },
+                {
+                    "type": "text",
+                    "default": "Go Back",
+                    "id": "redirect_message",
+                    "label": "Redirect Text"
+                }
+        ]
+}
+{% endschema %}

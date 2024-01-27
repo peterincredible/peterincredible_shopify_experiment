@@ -1,0 +1,48 @@
+{% form 'customer_login', return_to: routes.root_url%}
+    {{ form.errors | default_errors }}
+  
+    <div class="email">
+      <label for="email">Email</label>
+      <input type="email" name="customer[email]" class="border">
+    </div>
+  
+    <div class="password">
+      <label for="password">Password</label>
+      <input type="password" name="customer[password]" class="border">
+    </div>
+  
+    <div class="submit">
+      <input type="submit" value="Sign in">
+    </div>
+    {% comment %} {%- if form.errors contains 'password' -%}
+        <p>meen change password / use another password</p>
+        
+        
+      {%- endif -%}
+    {%  if  form.errors contains 'email'%}
+        <p> email does not exists in the database period</p>
+    {%endif%} {% endcomment %}
+  {% endform %}
+  <h4>Forgot password</h4>
+  {% form 'recover_customer_password' %}
+    {{ form.errors | default_errors }}
+  
+    <div class="email">
+      <label for="email">Email</label>
+      <input type="email" name="email" class="border">
+    </div>
+  
+    <div class="submit">
+      <input type="submit" value="Submit" class="border">
+    </div>
+  {% endform %}
+
+  {% if shop.checkout.guest_login %}
+    <div><h1>you can checkout as a guest</h1></div>
+    {% form 'guest_login' %}
+      <div class="submit">
+        <input type="submit" value="Continue as guest">
+      </div>
+    {% endform %}
+  {% endif %}
+  

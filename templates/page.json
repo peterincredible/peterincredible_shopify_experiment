@@ -1,0 +1,11 @@
+{
+    "sections": {
+        "aboutus":{
+            "type": "template_aboutus"
+        },
+        "contact":{
+            "type": "template_contact"
+        }
+    },
+    "order": ["aboutus","contact"]
+}

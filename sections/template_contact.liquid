@@ -1,0 +1,48 @@
+<h1>{{settings.header_title}}</h1>
+{% form 'contact' %}
+    {% if form.posted_successfully? %}
+        <p>contacted recieved successfully</p>
+        {% else %}
+        {{ form.errors | default_errors }}
+    {% endif %}
+    
+    <div class="email">
+        <label for="email">Email Global settings</label>
+        <input type="email" name="contact[email]" id="email" class=" border-2"/>
+    </div>
+    <div class="message">
+        <label for="message">Message Global settings</label>
+        <textarea name="contact[body]" id="message" class=" border-2"></textarea>
+    </div>
+    <div class="submit">
+        <input type="submit" value="{{settings.submit_text}}" class=" border-2"/>
+      </div>
+  {% endform %}
+
+  {% schema %}
+  {
+    "name": "Contact Form",
+    "settings": [
+           {
+            "type": "text",
+            "default": "Form Header Title",
+            "id": "header_title",
+            "label": "Header Title",
+            "placeholder": "please enter placeholder form title"
+           },
+           {
+            "type": "text",
+            "default": "Submit Text",
+            "id": "submit_text",
+            "label": "Submit Text",
+            "placeholder": "please enter submit text"
+           }
+
+        ],
+    "presets": [
+        {
+            "name": "Contact Form"
+        }
+    ]
+  }
+  {% endschema %}

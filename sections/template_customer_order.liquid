@@ -1,0 +1,16 @@
+<h1>This is the customer order hippi</h1>
+<p>{{order.id}}</p>
+<h3>Order line items</h3>
+{%- for line_item in order.line_items -%}
+     <p>{{line_item.product.title}} --(<a href="{{line_item.product.url}}">view product </a>)</p>
+     {% if line_item.fulfillment %}
+            <p>Tracking Company: {{line_item.fulfillment.tracking_company}}</p>
+            <p>Tracking No: {{line_item.fulfillment.tracking_number}}</p>
+            <p><a href="{{line_item.fulfillment.tracking_url}}">click here to view parcel route</a></p>
+{% endif %}
+{% assign first_transaction = order.transactions.first%}
+<p> amount transactions:{{first_transaction.amount}},credit company:({{first_transaction.gateway_display_name}})
+    payment:({{first_transaction.payment_details.credit_card_company}})
+</p>
+
+{%endfor%}

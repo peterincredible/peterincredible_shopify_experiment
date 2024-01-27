@@ -1,0 +1,18 @@
+<h1 class=" text-center"> Here is the all collection List by peter dibie</h1>
+{% paginate collections by 9 %}
+    <div class=" grid grid-cols-1 sm:grid-cols-2  md:grid-cols-3 gap-x-16 gap-y-20">
+        {% for collection in collections %}
+            <div>
+                <div class=" h-80">
+                    <img class="block h-full w-full" src="{{collection.featured_image|  image_url }}" alt="image cant be shown"/>
+                </div>
+                <a href="{{collection.url}}">{{collection.title}}</a>
+            </div>
+            
+        {% endfor %}
+    </div>
+    {{paginate |  default_pagination}}
+{% endpaginate %}
+   
+        
+    

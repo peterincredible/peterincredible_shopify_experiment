@@ -1,0 +1,42 @@
+
+<h1>your search result for word '' is {{search.results  | size}}</h1>
+{% paginate search.results by 2 %}
+    {% for item in search.results%}
+        <p>{{item.title}}</p>
+    {% endfor %} 
+    {% for part in paginate.parts %}
+        {% if part.is_link -%}
+          {{ part.title | link_to: part.url}}
+          {%- else -%}
+            <span>{{ part.title }}</span>
+        {% endif %}
+      {%- endfor %}
+{% endpaginate %}
+{% comment %} {% paginate search.results by 2 %}
+    {% for item in search.results%}
+        <p>{{item.object_type}} {{item.title}}</p>
+    {% endfor %} 
+    {% for part in paginate.parts %}
+        {% if part.is_link -%}
+          {{ part.title | link_to: part.url}}
+          {%- else -%}
+            <span>{{ part.title }}</span>
+        {% endif %}
+      {%- endfor %}
+{% endpaginate %} {% endcomment %}
+
+ {% comment %}
+        {% paginate collection.products by 5 -%}
+  {% for part in paginate.parts -%}
+    {% if part.is_link -%}
+      {{ part.title | link_to: part.url}}
+    {%- else -%}
+      <span>{{ part.title }}</span>
+    {% endif %}
+  {%- endfor %}
+{%- endpaginate %}
+{% endcomment %}
+
+{% comment %} {% for product in searched_products %}
+    <p>{{product.object_type}}</p>
+{% endfor %}  {% endcomment %}

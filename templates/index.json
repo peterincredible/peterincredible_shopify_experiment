@@ -1,0 +1,8 @@
+{
+    "sections": {
+        "template_index":{
+            "type": "template_index"
+        }
+    },
+    "order": ["template_index"]
+}
