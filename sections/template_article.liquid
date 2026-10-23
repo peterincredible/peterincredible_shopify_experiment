@@ -52,7 +52,7 @@
     {% endform %}
     <h4>List of comments</h4>
     {% if article.comments_count > 0 %}
-        {% render 'pagination' article %}
+        {% render 'pagination' %}
         {% else %}
             <p>sorry you have no comments</p>
     {% endif %}
@@ -109,4 +109,13 @@
 
     ]
 }
-{% endschema %}
+{% endschema %}{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'pagination' article %}"
+  to: "{% render 'pagination' %}"
+  position: 1842..1867
+{%- endcomment -%}
